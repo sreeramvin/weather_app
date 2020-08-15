@@ -1,17 +1,54 @@
-import React from 'react';
+import React , { useState, useEffect } from 'react';
 import './App.css';
 
+const api = {
+  key: "b7b81300b802c83fe78c18a8434f10fd",
+  base: "https://api.openweathermap.org/data/2.5/"
+}
+
 function App() {
+  const [city, setCity] = useState('');
+  const [weather,setWeather] = useState({});
+
+  const search = (evt) =>{
+    evt.preventDefault()
+    fetch(`${api.base}weather?q=${city}&units=metric&APPID=${api.key}`)
+    .then(res =>res.json())
+    .then(res =>{
+      setWeather(res);
+      setCity('');
+      console.log(res)
+    });
+  }
+ 
+
   return (
     <div className="App">
      <h1>
        weather app
      </h1>
      <div className="search-box">
-       <input type="text" 
-          placeholder="Search...">
+       <input 
+          type="text" 
+          placeholder="Search..."
+          onChange={e => setCity(e.target.value)}
+          value={city}
+          >
        </input>
+       <button
+        type="button"
+        onClick={search}
+        >
+          Search
+        </button>
+        
      </div>
+    <div>
+     <h1>{weather.name}</h1>
+     <h2>
+       hey
+     </h2>
+    </div>
     </div>
   );
 }
